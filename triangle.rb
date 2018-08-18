@@ -14,9 +14,19 @@
 #   about_triangle_project_2.rb
 #
 def triangle(a, b, c)
-  # WRITE THIS CODE
+  validate_sides(a, b, c)
+	return :equilateral if a == b && a == c 	
+	return :isosceles if a == b || a == c || b == c
+	return :scalene unless a == b && a == c
 end
 
 # Error class used in part 2.  No need to change this code.
 class TriangleError < StandardError
+end
+
+private
+
+def validate_sides(a, b, c)
+	raise TriangleError, "Negative or zero length doesn't make sense" if (a <= 0 || b <= 0 || c <= 0)
+	raise TriangleError, "Any two sides of a triangle should add up to more than the third side" if (a + b) <= c || (a + c) <= b || (b + c) <= a
 end
