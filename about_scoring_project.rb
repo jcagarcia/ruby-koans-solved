@@ -30,7 +30,26 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # Your goal is to write the score method.
 
 def score(dice)
-  # You need to write this method
+  score = 0
+
+  numbers_with_total_appears = group_numbers(dice)
+
+  numbers_with_total_appears.each do |key, value|
+    while value >= 3 do 
+      if key == 1
+        score += 1000
+      else 
+        score += key * 100
+      end
+      value -= 3
+      numbers_with_total_appears[key] = value
+    end
+  end
+
+  score += numbers_with_total_appears[1] * 100
+  score += numbers_with_total_appears[5] * 50
+  
+  score
 end
 
 class AboutScoringProject < Neo::Koan
@@ -72,6 +91,16 @@ class AboutScoringProject < Neo::Koan
     assert_equal 1100, score([1,1,1,1])
     assert_equal 1200, score([1,1,1,1,1])
     assert_equal 1150, score([1,1,1,5,1])
+  end
+
+  private 
+
+  def group_numbers(dice)
+    aux_dice = Hash.new(0)
+    dice.each do |item|
+      aux_dice[item] += 1
+    end
+    aux_dice
   end
 
 end
